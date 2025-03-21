@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import style from './Home.module.css'
 
 
@@ -11,11 +11,18 @@ export default function Home() {
 
     function fetchData(query) {
 
+        if (!query) return
+
         fetch(`https://rickandmortyapi.com/api/character/?name=${query}`)
-            .then(result => result.json())
+            .then(result => {
+                if (!result.ok) {
+                    throw new Error('nessun personaggio');
+                }
+                return result.json();
+            })
             .then(data => {
                 setResult(data.results)
-                console.log(data.results)
+                console.log('API')
             })
             .catch(err => console.error(err))
     }
@@ -23,22 +30,17 @@ export default function Home() {
     const handleChangeEvent = (e) => {
         const queryValue = e.target.value;
         setQuery(queryValue);
-    
-       
-        if (queryValue) {
-            setDropDown(true); 
-            fetchData(queryValue); 
-        } else {
-            setDropDown(false); 
-            setResult([]); 
-        }
+        setDropDown(queryValue.length > 0)
     };
 
     const handleClick = (e) => {
         setDropDown(false)
         setQuery(e.target.innerText)
-        fetchData(e.target.innerText)
     }
+
+    useEffect(() => {
+        fetchData(query);
+    }, [query])
 
     return (
         <div className={style.boxInput}>
