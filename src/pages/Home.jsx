@@ -23,14 +23,14 @@ export default function Home() {
     const handleChangeEvent = (e) => {
         const queryValue = e.target.value;
         setQuery(queryValue);
-
-        // Verifica si hay texto en el query
+    
+       
         if (queryValue) {
-            setDropDown(true); // Muestra el dropdown
-            fetchData(queryValue); // Realiza la búsqueda
+            setDropDown(true); 
+            fetchData(queryValue); 
         } else {
-            setDropDown(false); // Oculta el dropdown si no hay texto
-            setResult([]); // Limpia los resultados
+            setDropDown(false); 
+            setResult([]); 
         }
     };
 
